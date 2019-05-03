@@ -1,4 +1,4 @@
-Exercício Programa - 2019/1 - Design de Software
+Summoners - 2019/1 - Design de Software
 ------------------------------------------------
 
 Alunos: 
