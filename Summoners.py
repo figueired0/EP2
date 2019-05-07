@@ -65,7 +65,8 @@ class Player(pygame.sprite.Sprite):
 def load_assets(img_dir, snd_dir):
     assets={}
     assets['player_img'] = pygame.image.load(path.join(img_dir,'scooby.png')).convert()
-    assets['background'] = pygame.image.load(path.join(img_dir,"Cenário-1.png")).convert()
+    assets["background_img"] = pygame.image.load(path.join(img_dir,"Cenário-1.png")).convert()
+    return assets
 
 # Inicialização do Pygame.
 pygame.init()
@@ -84,7 +85,7 @@ assets = load_assets(img_dir,snd_dir)
 clock = pygame.time.Clock()
 
 # Carrega o fundo do jogo
-background = assets['background']
+background = assets["background_img"]
 background_rect = background.get_rect()
 
 # Carrega os sons do jogo
