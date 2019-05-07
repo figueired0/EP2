@@ -7,8 +7,8 @@ img_dir = path.join(path.dirname(__file__), 'img')
 snd_dir = path.join(path.dirname(__file__), 'snd')
 
 # Dados gerais do jogo.
-WIDTH = 700 # Largura da tela
-HEIGHT = 600 # Altura da tela
+WIDTH = 1278 # Largura da tela
+HEIGHT = 718 # Altura da tela
 FPS = 60 # Frames por segundo
 
 # Define algumas variáveis com as cores básicas
@@ -65,7 +65,7 @@ class Player(pygame.sprite.Sprite):
 def load_assets(img_dir, snd_dir):
     assets={}
     assets['player_img'] = pygame.image.load(path.join(img_dir,'scooby.png')).convert()
-    assets['background'] = pygame.image.load(path.join(img_dir,"Cenário-1.png")).convert()
+    assets['background'] = pygame.image.load(path.join(img_dir,"Cenário-1.png")).convert()
 
 # Inicialização do Pygame.
 pygame.init()
