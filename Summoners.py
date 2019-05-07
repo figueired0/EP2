@@ -65,7 +65,7 @@ class Player(pygame.sprite.Sprite):
 def load_assets(img_dir, snd_dir):
     assets={}
     assets['player_img'] = pygame.image.load(path.join(img_dir,'scooby.png')).convert()
-    assets['background'] = pygame.image.load(path.join(img_dir,"Cenário-1.png")).convert()
+    assets['background'] = pygame.image.load(path.join(img_dir,'Cenário-1.png')).convert()
 
 # Inicialização do Pygame.
 pygame.init()
