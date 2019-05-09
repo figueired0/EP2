@@ -33,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.image = player_img
         
         # Diminuindo o tamanho da imagem.
-        self.image = pygame.transform.scale(player_img, (50, 38))
+        self.image = pygame.transform.scale(player_img, (100, 80))
         
         # Deixando transparente.
         self.image.set_colorkey(WHITE)
@@ -47,13 +47,16 @@ class Player(pygame.sprite.Sprite):
         
         # Velocidade do boneco
         self.speedx = 0
+        self.speedy = 0
         
-        #Criar um boneco
-    
+        #Gravidade
+        
+        
     # Metodo que atualiza a posição do boneco
     def update(self):
         self.rect.x += self.speedx
-        
+        self.rect.y += self.speedy
+                    
         # Mantem dentro da tela
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
@@ -64,8 +67,9 @@ class Player(pygame.sprite.Sprite):
 # Carrega todos os assets uma vez só           
 def load_assets(img_dir, snd_dir):
     assets={}
-    assets['player_img'] = pygame.image.load(path.join(img_dir,'scooby.png')).convert()
-    assets["background_img"] = pygame.image.load(path.join(img_dir,"Cenário-1.png")).convert()
+    assets['player1_img'] = pygame.image.load(path.join(img_dir,'scooby.png')).convert()
+    assets["background_img"] = pygame.image.load(path.join(img_dir,"Cenário.gif")).convert()
+    assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'scooby.png')).convert()
     return assets
 
 
@@ -94,12 +98,14 @@ pygame.mixer.music.load(path.join(snd_dir, 'Background_sound.ogg'))
 pygame.mixer.music.set_volume(0.4)
 
 
-# Cria uma nave. O construtor será chamado automaticamente.
-player = Player(assets['player_img'])
+# Cria um personagem. O construtor será chamado automaticamente.
+player1 = Player(assets['player1_img'])
+player2 = Player(assets['Player2_img'])
 
-# Cria um grupo de todos os sprites e adiciona a nave.
+# Cria um grupo de todos os sprites e adiciona o personagem.
 all_sprites = pygame.sprite.Group()
-all_sprites.add(player)
+all_sprites.add(player1)
+all_sprites.add(player2)
 
 # Comando para evitar travamentos.
 try:
@@ -122,18 +128,48 @@ try:
             # Verifica se apertou alguma tecla.
             if event.type == pygame.KEYDOWN:
                 # Dependendo da tecla, altera a velocidade.
+                #JOGADOR 1
                 if event.key == pygame.K_LEFT:
-                    player.speedx = -8
+                    player1.speedx = -8
                 if event.key == pygame.K_RIGHT:
-                    player.speedx = 8
+                    player1.speedx = 8   
+                if event.key == pygame.K_UP:
+                    player1.speedy = -8 
+                if event.key == pygame.K_DOWN:
+                    player1.speedy = 8
+                    
+                #JOGADOR 2
+                if event.key == pygame.K_a:
+                    player2.speedx = -8
+                if event.key == pygame.K_d:
+                    player2.speedx = 8
+                if event.key == pygame.K_w:
+                    player2.speedy = -8
+                if event.key == pygame.K_s:
+                    player2.speedy = 8
                     
             # Verifica se soltou alguma tecla.
             if event.type == pygame.KEYUP:
                 # Dependendo da tecla, altera a velocidade.
+                #JOGAR 1
+                if event.key == pygame.K_DOWN:
+                    player1.speedy = 0
                 if event.key == pygame.K_LEFT:
-                    player.speedx = 0
+                    player1.speedx = 0
                 if event.key == pygame.K_RIGHT:
-                    player.speedx = 0
+                    player1.speedx = 0
+                if event.key == pygame.K_UP:
+                    player1.speedy = 0    
+                
+                #JOGADOR 2
+                if event.key == pygame.K_a:
+                    player2.speedx = 0
+                if event.key == pygame.K_d:
+                    player2.speedx = 0
+                if event.key == pygame.K_w:
+                    player2.speedy = 0
+                if event.key == pygame.K_s:
+                    player2.speedy = 0
                     
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
