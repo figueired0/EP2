@@ -1,6 +1,7 @@
 # Importando as bibliotecas necessárias.
 import pygame
 from os import path
+vec = pygame.math.Vector2
 
 # Estabelece a pasta que contem as figuras e sons.
 img_dir = path.join(path.dirname(__file__), 'img')
@@ -10,6 +11,7 @@ snd_dir = path.join(path.dirname(__file__), 'snd')
 WIDTH = 1278 # Largura da tela
 HEIGHT = 718 # Altura da tela
 FPS = 60 # Frames por segundo
+
 
 # Define algumas variáveis com as cores básicas
 WHITE = (255, 255, 255)
@@ -41,29 +43,61 @@ class Player(pygame.sprite.Sprite):
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
         
-        # Centraliza embaixo da tela.
-        self.rect.centerx = WIDTH / 2
-        self.rect.bottom = HEIGHT - 10
+        # Posição do personagem
+        self.pos = vec(WIDTH /2, HEIGHT / 2)
+        self.rect.center = (WIDTH / 2, HEIGHT /2)
         
-        # Velocidade do boneco
-        self.speedx = 0
-        self.speedy = 0
+        # Velocidade
+        self.vel = vec(0, 0)
         
-        #Gravidade
+        # Aceleração
+        self.acc = vec(0, 0)
         
+        # Propriedades dos jogadores (Movimento)
+        self.PLAYER_ACC = 1
+        self.PLAYER_FRICTION = -0.12
         
     # Metodo que atualiza a posição do boneco
     def update(self):
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
-                    
+        # Gerando a graviade.
+        self.acc = vec(0 , 0.5)
+        
+        # Definindo as teclas
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.acc.x = -self.PLAYER_ACC
+        if keys[pygame.K_RIGHT]:
+            self.acc.x = self.PLAYER_ACC
+        
+        # Aplicando a fricção ao movimento
+        self.acc.x += self.vel.x * self.PLAYER_FRICTION
+        
+        # Detalhes da movimentação
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+                
         # Mantem dentro da tela
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
+        if self.pos.x > WIDTH:
+            self.pos.x = 0
+        if self.pos.x < 0:
+            self.pos.x = WIDTH
             
+        self.rect.center = self.pos
 
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, x, y, w, h):
+        
+        # Construtor da classe pai (Sprite)
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.image = pygame.Surface((w, h))
+        self.image.fill(WHITE)
+        self.rect = self. image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        
+        
+        
 # Carrega todos os assets uma vez só           
 def load_assets(img_dir, snd_dir):
     assets={}
@@ -101,11 +135,21 @@ pygame.mixer.music.set_volume(0.4)
 # Cria um personagem. O construtor será chamado automaticamente.
 player1 = Player(assets['player1_img'])
 player2 = Player(assets['Player2_img'])
+player1.enemy = player2.rect
+player2.enemy = player1.rect
 
 # Cria um grupo de todos os sprites e adiciona o personagem.
 all_sprites = pygame.sprite.Group()
+
 all_sprites.add(player1)
 all_sprites.add(player2)
+
+# Cria um grupo de todos os sprites e adiciona uma plataforma.
+platforms = pygame.sprite.Group()
+
+p1 = Platform(0, HEIGHT - 1, WIDTH, 2)
+all_sprites.add(p1)
+
 
 # Comando para evitar travamentos.
 try:
@@ -126,57 +170,14 @@ try:
                 running = False
             
             # Verifica se apertou alguma tecla.
-            if event.type == pygame.KEYDOWN:
-                # Dependendo da tecla, altera a velocidade.
-                #JOGADOR 1
-                if event.key == pygame.K_LEFT:
-                    player1.speedx = -8
-                if event.key == pygame.K_RIGHT:
-                    player1.speedx = 8   
-                if event.key == pygame.K_UP:
-                    player1.speedy = -8 
-                if event.key == pygame.K_DOWN:
-                    player1.speedy = 8
-                    
-                #JOGADOR 2
-                if event.key == pygame.K_a:
-                    player2.speedx = -8
-                if event.key == pygame.K_d:
-                    player2.speedx = 8
-                if event.key == pygame.K_w:
-                    player2.speedy = -8
-                if event.key == pygame.K_s:
-                    player2.speedy = 8
-                    
-            # Verifica se soltou alguma tecla.
-            if event.type == pygame.KEYUP:
-                # Dependendo da tecla, altera a velocidade.
-                #JOGAR 1
-                if event.key == pygame.K_DOWN:
-                    player1.speedy = 0
-                if event.key == pygame.K_LEFT:
-                    player1.speedx = 0
-                if event.key == pygame.K_RIGHT:
-                    player1.speedx = 0
-                if event.key == pygame.K_UP:
-                    player1.speedy = 0    
-                
-                #JOGADOR 2
-                if event.key == pygame.K_a:
-                    player2.speedx = 0
-                if event.key == pygame.K_d:
-                    player2.speedx = 0
-                if event.key == pygame.K_w:
-                    player2.speedy = 0
-                if event.key == pygame.K_s:
-                    player2.speedy = 0
+            
                     
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
         all_sprites.update()
     
         # A cada loop, redesenha o fundo e os sprites
-        screen.fill(BLACK)
+        screen.fill(WHITE)
         screen.blit(background, background_rect)
         all_sprites.draw(screen)
         
