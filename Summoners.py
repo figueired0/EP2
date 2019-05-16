@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
     # Metodo que atualiza a posição do boneco
     def update(self):
         # Gerando a graviade.
-        self.acc = vec(0 , 0.5)
+        self.acc = vec(0 , 0.1)
         
         # Definindo as teclas
         keys = pygame.key.get_pressed()
@@ -77,14 +77,14 @@ class Player(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
                 
         # Mantem dentro da tela
-        if self.pos.x > WIDTH:
-            self.pos.x = 0
-        if self.pos.x < 0:
-            self.pos.x = WIDTH
-        if self.pos.y > HEIGHT:
+        if self.pos.x > WIDTH - 50:
+            self.pos.x = WIDTH - 50
+        if self.pos.x < 50:
+            self.pos.x = 50
+        if self.pos.y > (HEIGHT - 40):
+            self.pos.y = (HEIGHT - 40)
+        if self.pos.y == 0:
             self.pos.y = 0
-        if self.pos.y < 0:
-            self.pos.y = HEIGHT
             
         self.rect.center = self.pos
 
