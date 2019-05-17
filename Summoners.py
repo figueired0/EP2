@@ -110,13 +110,42 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         
+class Bullet(pygame.sprite.Sprite):
+    
+    # Construtor da classe.
+    def __init__(self, x, y, bullet_img):
         
+        # Construtor da classe pai (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.image = bullet_img
+        
+        # Deixando transparente.
+        self.image.set_colorkey(BLACK)
+        
+        # Detalhes sobre o posicionamento.
+        self.rect = self.image.get_rect()
+        
+        # Coloca no lugar inicial definido em x, y do constutor
+        self.rect.bottom = y + 35
+        self.rect.centerx = x - 35
+        self.speedx = -20
+        
+    # Metodo que atualiza a posição da navinha
+    def update(self):
+        self.rect.x += self.speedx
+        
+        # Se o tiro passar do inicio da tela, morre.
+        if self.rect.centerx < 0:
+            self.kill()
+       
 # Carrega todos os assets uma vez só           
 def load_assets(img_dir, snd_dir):
     assets={}
     assets['player1_img'] = pygame.image.load(path.join(img_dir,'scooby.png')).convert()
     assets["background_img"] = pygame.image.load(path.join(img_dir,"Cenário.gif")).convert()
     assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'scooby.png')).convert()
+    assets['bullet_img'] = pygame.image.load(path.join(img_dir,'laserRed16.png')).convert()
     return assets
 
 
@@ -160,6 +189,9 @@ all_sprites.add(player2)
 # Cria um grupo de todos os sprites e adiciona uma plataforma.
 platforms = pygame.sprite.Group()
 
+# Cria um grupo de todos os sprites e adciona um bullet.
+bullets = pygame.sprite.Group()
+
 # Cria uma plataforma
 p1 = Platform(0, HEIGHT - 40, WIDTH, 40)
 all_sprites.add(p1)
@@ -189,10 +221,21 @@ try:
             
             # Verifica se apertou alguma tecla.
             if event.type == pygame.KEYDOWN:
+                # PLAYER 1
+                # Pulo
                 if event.key == pygame.K_UP:
                     player1.jump()
+                # Tiro
+                if event.key == pygame.K_SPACE:
+                        bullet = Bullet(player1.rect.centerx, player1.rect.top, assets["bullet_img"])
+                        all_sprites.add(bullet)
+                        bullets.add(bullet)
+                        
+                # PLAYER 2
+                # Pulo
                 if event.key == pygame.K_w:
                     player2.jump()
+                # Tiro
                     
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
