@@ -43,6 +43,7 @@ class Player(pygame.sprite.Sprite):
         
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
+        # self.rect.width = self.rect.width/2
         
         # Posição do personagem
         self.pos = vec(WIDTH /2, HEIGHT / 2)
@@ -63,7 +64,6 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         # Gerando a graviade.
         self.acc = vec(0 , self.PLAYER_GRAV)
-        self.acc = vec(0 , 0.1)
         
         # Definindo as teclas
         keys = pygame.key.get_pressed()
@@ -77,7 +77,7 @@ class Player(pygame.sprite.Sprite):
         
         # Detalhes da movimentação
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        self.pos += self.vel #+ 0.5 * self.acc
                 
         # Mantem dentro da tela
         if self.pos.x > WIDTH - 50:
@@ -86,15 +86,17 @@ class Player(pygame.sprite.Sprite):
             self.pos.x = 50
         if self.pos.y > (HEIGHT - 40):
             self.pos.y = (HEIGHT - 40)
+            self.vel.y = 0
         if self.pos.y == 0:
             self.pos.y = 0
+            self.vel.y = 0
             
         self.rect.midbottom = self.pos
         
     def jump(self):
         # Personagem pula somente se estiver na plataforma
-        
-            self.vel.y = -20
+        if self.vel.y == 0:
+            self.vel.y = -10
 
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
@@ -195,16 +197,17 @@ try:
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
         all_sprites.update()
-        hits = pygame.sprite.spritecollide(player1, platforms, False)
-        hits = pygame.sprite.spritecollide(player2, platforms, False)
-        if hits:
+        hits1 = pygame.sprite.spritecollide(player1, platforms, False)
+        hits2 = pygame.sprite.spritecollide(player2, platforms, False)
+        if hits1:
             # Jogador 1 colide com a plataforma
-            player1.pos.y = hits[0].rect.top
+            player1.pos.y = hits1[0].rect.top
             # jogar 1 se mantém na plataforma
             player1.vel.y = 0
             
+        if hits2:
             # Jogador 2 colide com a plataforma
-            player2.pos.y = hits[0].rect.top
+            player2.pos.y = hits2[0].rect.top
             # Jogador 2 se mantém na plataforma
             player2.vel.y = 0
         
