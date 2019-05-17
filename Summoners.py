@@ -197,9 +197,25 @@ p1 = Platform(0, HEIGHT - 40, WIDTH, 40)
 all_sprites.add(p1)
 platforms.add(p1)
 
-p2 = Platform(WIDTH/2 - 50, HEIGHT * 3 / 4, 100, 20)
+p2 = Platform(WIDTH/2 - 10, HEIGHT - 110, 50, 50)
 all_sprites.add(p2)
 platforms.add(p2)
+
+p3 = Platform(WIDTH/2 - 30, HEIGHT - 130, 50, 40)
+all_sprites.add(p3)
+platforms.add(p3)
+
+#p3 = Platform(WIDTH/2 - 50, HEIGHT * 3 / 4, 50, 40)
+#all_sprites.add(p3)
+#platforms.add(p3)
+#
+#p4 = Platform(WIDTH/2 - 50, HEIGHT * 3 / 4, 50, 50)
+#all_sprites.add(p4)
+#platforms.add(p4)
+#
+#p5 = Platform(WIDTH/2 - 50, HEIGHT * 3 / 4, 50, 60)
+#all_sprites.add(p5)
+#platforms.add(p5)
 
 # Comando para evitar travamentos.
 try:
@@ -211,6 +227,10 @@ try:
         
         # Ajusta a velocidade do jogo.
         clock.tick(FPS)
+        
+        # Define a gravidade
+        player1.acc = vec(0 , player1.PLAYER_GRAV)
+        player2.acc = vec(0 , player2.PLAYER_GRAV)
         
         # Processa os eventos (mouse, teclado, botão, etc).
         for event in pygame.event.get():
@@ -231,6 +251,7 @@ try:
                         all_sprites.add(bullet)
                         bullets.add(bullet)
                         
+                        
                 # PLAYER 2
                 # Pulo
                 if event.key == pygame.K_w:
@@ -243,16 +264,18 @@ try:
         hits1 = pygame.sprite.spritecollide(player1, platforms, False)
         hits2 = pygame.sprite.spritecollide(player2, platforms, False)
         if hits1:
+            if player1.pos.y < hits1[0].rect.bottom:
             # Jogador 1 colide com a plataforma
-            player1.pos.y = hits1[0].rect.top
-            # jogar 1 se mantém na plataforma
-            player1.vel.y = 0
+                player1.pos.y = hits1[0].rect.top
+                # jogar 1 se mantém na plataforma
+                player1.vel.y = 0
             
         if hits2:
-            # Jogador 2 colide com a plataforma
-            player2.pos.y = hits2[0].rect.top
-            # Jogador 2 se mantém na plataforma
-            player2.vel.y = 0
+            if player1.pos.y < hits2[0].rect.bottom:
+                # Jogador 2 colide com a plataforma
+                player2.pos.y = hits2[0].rect.top
+                # Jogador 2 se mantém na plataforma
+                player2.vel.y = 0
         
         # A cada loop, redesenha o fundo e os sprites
         screen.fill(WHITE)
@@ -263,5 +286,5 @@ try:
         pygame.display.flip()
         
 finally:
-    
     pygame.quit()
+    quit()
