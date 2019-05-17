@@ -95,8 +95,8 @@ class Player(pygame.sprite.Sprite):
         
     def jump(self):
         # Personagem pula somente se estiver na plataforma
-        if self.vel.y == 0:
-            self.vel.y = -10
+        if self.vel.y >= 0:
+            self.vel.y = -20
 
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
