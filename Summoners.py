@@ -193,7 +193,7 @@ platforms = pygame.sprite.Group()
 bullets = pygame.sprite.Group()
 
 # Cria uma plataforma
-p1 = Platform(0, HEIGHT - 40, WIDTH, 40)
+p1 = Platform(WIDTH/2 - 58, HEIGHT - 20, 40, 50)
 all_sprites.add(p1)
 platforms.add(p1)
 
@@ -229,13 +229,109 @@ p9 = Platform(WIDTH/2 + 15, HEIGHT - 150, 65, 20)
 all_sprites.add(p9)
 platforms.add(p9)
 
-p10 = Platform(WIDTH/2 + 55, HEIGHT - 90, 55, 20)
+p10 = Platform(WIDTH/2 + 55, HEIGHT - 90, 55, 30)
 all_sprites.add(p10)
 platforms.add(p10)
 
 p10 = Platform(WIDTH/2 + 150, HEIGHT - 85, 55, 20)
 all_sprites.add(p10)
 platforms.add(p10)
+
+p11 = Platform(WIDTH/2 + 220, HEIGHT - 230, 55, 20)
+all_sprites.add(p11)
+platforms.add(p11)
+
+p12 = Platform(WIDTH/2 + 270, HEIGHT - 250, 55, 20)
+all_sprites.add(p12)
+platforms.add(p12)
+
+p13 = Platform(WIDTH/2 + 190, HEIGHT - 225, 20, 20)
+all_sprites.add(p13)
+platforms.add(p13)
+
+p14 = Platform(WIDTH/2 + 225, HEIGHT - 295, 20, 20)
+all_sprites.add(p14)
+platforms.add(p14)
+
+p15 = Platform(WIDTH/2 + 210, HEIGHT - 340, 30, 20)
+all_sprites.add(p15)
+platforms.add(p15)
+
+p16 = Platform(WIDTH/2 + 290, HEIGHT - 295, 40, 20)
+all_sprites.add(p16)
+platforms.add(p16)
+
+p17 = Platform(WIDTH/2 - 400, HEIGHT - 115, 90, 20)
+all_sprites.add(p17)
+platforms.add(p17)
+
+p18 = Platform(WIDTH/2 + 160, HEIGHT - 90, 30, 20)
+all_sprites.add(p18)
+platforms.add(p18)
+
+p19 = Platform(WIDTH/2 - 460, HEIGHT - 65, 85, 20)
+all_sprites.add(p19)
+platforms.add(p19)
+
+p20 = Platform(WIDTH/2 - 500, HEIGHT - 105, 45, 20)
+all_sprites.add(p20)
+platforms.add(p20)
+
+p21 = Platform(WIDTH/2 - 450, HEIGHT - 200, 40, 20)
+all_sprites.add(p21)
+platforms.add(p21)
+
+p22 = Platform(WIDTH/2 - 365, HEIGHT - 380, 60, 20)
+all_sprites.add(p22)
+platforms.add(p22)
+
+p23 = Platform(WIDTH/2 - 365, HEIGHT - 440, 40, 20)
+all_sprites.add(p23)
+platforms.add(p23)
+
+p23 = Platform(WIDTH/2 - 315, HEIGHT - 410, 20, 20)
+all_sprites.add(p23)
+platforms.add(p23)
+
+p24 = Platform(WIDTH/2 + 60, HEIGHT - 420, 60, 20)
+all_sprites.add(p24)
+platforms.add(p24)
+
+p25 = Platform(WIDTH/2 + 20, HEIGHT - 15, 130, 50)
+all_sprites.add(p25)
+platforms.add(p25)
+
+p26 = Platform(WIDTH/2 + 100, HEIGHT - 30, 80, 50)
+all_sprites.add(p26)
+platforms.add(p26)
+
+p27 = Platform(WIDTH/2 + 20, HEIGHT - 40, 70, 20)
+all_sprites.add(p27)
+platforms.add(p27)
+
+p28 = Platform(WIDTH/2 - 340, HEIGHT - 35, 60, 50)
+all_sprites.add(p28)
+platforms.add(p28)
+
+p29 = Platform(WIDTH/2 - 275, HEIGHT - 25, 20, 50)
+all_sprites.add(p29)
+platforms.add(p29)
+
+p30 = Platform(WIDTH/2 - 250, HEIGHT - 50, 70, 30)
+all_sprites.add(p30)
+platforms.add(p30)
+
+p31 = Platform(WIDTH/2 - 230, HEIGHT - 55, 30, 30)
+all_sprites.add(p31)
+platforms.add(p31)
+
+p32 = Platform(WIDTH/2 - 180, HEIGHT - 30, 65, 50)
+all_sprites.add(p32)
+platforms.add(p32)
+
+p33 = Platform(WIDTH/2 - 480, HEIGHT - 10, 70, 50)
+all_sprites.add(p33)
+platforms.add(p33)
 
 # Comando para evitar travamentos.
 try:
