@@ -58,7 +58,7 @@ class Player1(pygame.sprite.Sprite):
         # Propriedades dos jogadores (Movimento)
         self.PLAYER_ACC = 1
         self.PLAYER_FRICTION = -0.12
-        self.PLAYER_GRAV = 1
+        self.PLAYER_GRAV = 1.5
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -173,6 +173,7 @@ class Player2(pygame.sprite.Sprite):
         # Personagem pula somente se estiver na plataforma
         if self.vel.y >= 0:
             self.vel.y = -20
+            
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
         
@@ -180,7 +181,6 @@ class Platform(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         
         self.image = pygame.Surface((w, h))
-        self.image.fill(WHITE)
         self.rect = self. image.get_rect()
         self.rect.x = x
         self.rect.y = y
