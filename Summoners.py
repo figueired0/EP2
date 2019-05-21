@@ -77,7 +77,7 @@ class Player1(pygame.sprite.Sprite):
         
         # Detalhes da movimentação
         self.vel += self.acc
-        self.pos += self.vel #+ 0.5 * self.acc
+        self.pos += self.vel + 0.5 * self.acc
                 
         # Mantem dentro da tela
         if self.pos.x > WIDTH:
@@ -153,15 +153,15 @@ class Player2(pygame.sprite.Sprite):
         
         # Detalhes da movimentação
         self.vel += self.acc
-        self.pos += self.vel #+ 0.5 * self.acc
+        self.pos += self.vel + 0.5 * self.acc
                 
         # Mantem dentro da tela
-        if self.pos.x > WIDTH - 50:
-            self.pos.x = WIDTH - 50
+        if self.pos.x > WIDTH:
+            self.pos.x = WIDTH
         if self.pos.x < 50:
             self.pos.x = 50
-        if self.pos.y > (HEIGHT - 40):
-            self.pos.y = (HEIGHT - 40)
+        if self.pos.y > (HEIGHT):
+            self.pos.y = (HEIGHT)
             self.vel.y = 0
         if self.pos.y == 0:
             self.pos.y = 0
@@ -419,10 +419,6 @@ try:
         # Ajusta a velocidade do jogo.
         clock.tick(FPS)
         
-        # Define a gravidade
-        player1.acc = vec(0 , player1.PLAYER_GRAV)
-        player2.acc = vec(0 , player2.PLAYER_GRAV)
-        
         # Processa os eventos (mouse, teclado, botão, etc).
         for event in pygame.event.get():
             
@@ -466,7 +462,7 @@ try:
                 player1.vel.y = 0
             
         if hits2:
-            if player1.pos.y < hits2[0].rect.bottom:
+            if player2.pos.y < hits2[0].rect.bottom:
                 # Jogador 2 colide com a plataforma
                 player2.pos.y = hits2[0].rect.top
                 # Jogador 2 se mantém na plataforma
