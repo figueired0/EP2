@@ -22,7 +22,7 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
 # Classe Jogador que representa o personagem
-class Player(pygame.sprite.Sprite):
+class Player1(pygame.sprite.Sprite):
     
     # Construtor da classe.
     def __init__(self, player_img):
@@ -58,7 +58,7 @@ class Player(pygame.sprite.Sprite):
         # Propriedades dos jogadores (Movimento)
         self.PLAYER_ACC = 1
         self.PLAYER_FRICTION = -0.12
-        self.PLAYER_GRAV = 0.5
+        self.PLAYER_GRAV = 1
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -70,6 +70,82 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_LEFT]:
             self.acc.x = -self.PLAYER_ACC
         if keys[pygame.K_RIGHT]:
+            self.acc.x = self.PLAYER_ACC
+        
+        # Aplicando a fricção ao movimento
+        self.acc.x += self.vel.x * self.PLAYER_FRICTION
+        
+        # Detalhes da movimentação
+        self.vel += self.acc
+        self.pos += self.vel #+ 0.5 * self.acc
+                
+        # Mantem dentro da tela
+        if self.pos.x > WIDTH:
+            self.pos.x = WIDTH 
+        if self.pos.x < 50:
+            self.pos.x = 50
+        if self.pos.y > (HEIGHT):
+            self.pos.y = (HEIGHT )
+            self.vel.y = 0
+        if self.pos.y == 0:
+            self.pos.y = 0
+            self.vel.y = 0
+            
+        self.rect.midbottom = self.pos
+        
+    def jump(self):
+        # Personagem pula somente se estiver na plataforma
+        if self.vel.y >= 0:
+            self.vel.y = -20
+
+class Player2(pygame.sprite.Sprite):
+    
+    # Construtor da classe.
+    def __init__(self, player_img):
+        
+        # Construtor da classe pai (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+        
+        
+        # Carregando a imagem do personagem.
+        player_img = pygame.image.load(path.join(img_dir, "scooby.png")).convert()
+        self.image = player_img
+        
+        # Diminuindo o tamanho da imagem.
+        self.image = pygame.transform.scale(player_img, (100, 80))
+        
+        # Deixando transparente.
+        self.image.set_colorkey(WHITE)
+        
+        # Detalhes sobre o posicionamento.
+        self.rect = self.image.get_rect()
+        # self.rect.width = self.rect.width/2
+        
+        # Posição do personagem
+        self.pos = vec(WIDTH /2, HEIGHT / 2)
+        self.rect.center = (WIDTH / 2, HEIGHT /2)
+        
+        # Aceleração
+        self.acc = vec(0, 0)
+        
+        # Velocidade
+        self.vel = vec(0, 0)
+        
+        # Propriedades dos jogadores (Movimento)
+        self.PLAYER_ACC = 1
+        self.PLAYER_FRICTION = -0.12
+        self.PLAYER_GRAV = 1
+        
+    # Metodo que atualiza a posição do boneco
+    def update(self):
+        # Gerando a graviade.
+        self.acc = vec(0 , self.PLAYER_GRAV)
+        
+        # Definindo as teclas
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_a]:
+            self.acc.x = -self.PLAYER_ACC
+        if keys[pygame.K_d]:
             self.acc.x = self.PLAYER_ACC
         
         # Aplicando a fricção ao movimento
@@ -97,7 +173,6 @@ class Player(pygame.sprite.Sprite):
         # Personagem pula somente se estiver na plataforma
         if self.vel.y >= 0:
             self.vel.y = -20
-
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
         
@@ -175,8 +250,8 @@ pygame.mixer.music.set_volume(0.4)
 
 
 # Cria um personagem. O construtor será chamado automaticamente.
-player1 = Player(assets['player1_img'])
-player2 = Player(assets['Player2_img'])
+player1 = Player1(assets['player1_img'])
+player2 = Player2(assets['Player2_img'])
 player1.enemy = player2.rect
 player2.enemy = player1.rect
 
@@ -362,7 +437,7 @@ try:
                 if event.key == pygame.K_UP:
                     player1.jump()
                 # Tiro
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_m:
                         bullet = Bullet(player1.rect.centerx, player1.rect.top, assets["bullet_img"])
                         all_sprites.add(bullet)
                         bullets.add(bullet)
@@ -373,6 +448,10 @@ try:
                 if event.key == pygame.K_w:
                     player2.jump()
                 # Tiro
+                if event.key == pygame.K_f:
+                        bullet = Bullet(player2.rect.centerx, player2.rect.top, assets["bullet_img"])
+                        all_sprites.add(bullet)
+                        bullets.add(bullet)
                     
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
