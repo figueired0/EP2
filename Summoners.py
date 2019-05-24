@@ -21,6 +21,20 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
+# Função Barra do Escudo
+def draw_shield_bar(surf, x, y, pct): # (Superfície, posição x, posição y, porcentagem)
+    if pct < 0:
+        pct = 0
+    # Tamanho da barra:
+    BAR_LENGHT = 100
+    BAR_HEIGHT = 10
+    # O que enche a barra:
+    fill = (pct/100)*BAR_LENGHT
+    outline_rect = pygame.Rect(x, y, BAR_LENGHT, BAR_HEIGHT)
+    fill_rect = pygame.Rect(x, y, fill, BAR_HEIGHT)
+    pygame.draw.rect(surf, GREEN, fill_rect)
+    pygame.draw.rect(surf, WHITE, outline_rect, 2)
+
 # Classe Jogador que representa o personagem
 class Player1(pygame.sprite.Sprite):
     
@@ -46,7 +60,7 @@ class Player1(pygame.sprite.Sprite):
         # self.rect.width = self.rect.width/2
         
         # Posição do personagem
-        self.pos = vec(WIDTH /2, HEIGHT / 2)
+        self.pos = vec(3.5*WIDTH/6, HEIGHT / 2)
         self.rect.center = (WIDTH / 2, HEIGHT /2)
         
         # Aceleração
@@ -59,6 +73,9 @@ class Player1(pygame.sprite.Sprite):
         self.PLAYER_ACC = 1
         self.PLAYER_FRICTION = -0.12
         self.PLAYER_GRAV = 1.5
+        
+        # Escudo
+        self.shield = 100
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -80,8 +97,8 @@ class Player1(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
                 
         # Mantem dentro da tela
-        if self.pos.x > WIDTH:
-            self.pos.x = WIDTH 
+        if self.pos.x > WIDTH - 50:
+            self.pos.x = WIDTH -50 
         if self.pos.x < 50:
             self.pos.x = 50
         if self.pos.y > (HEIGHT):
@@ -97,7 +114,13 @@ class Player1(pygame.sprite.Sprite):
         # Personagem pula somente se estiver na plataforma
         if self.vel.y >= 0:
             self.vel.y = -20
+    
+    def shoot(self):
+        bullet = Bullet(self.rect.centerx, self.rect.top, assets['bullet_img'])
+        all_sprites.add(bullet)
+        bullets.add(bullet)
 
+# Cria classe do personagem 2
 class Player2(pygame.sprite.Sprite):
     
     # Construtor da classe.
@@ -122,7 +145,7 @@ class Player2(pygame.sprite.Sprite):
         # self.rect.width = self.rect.width/2
         
         # Posição do personagem
-        self.pos = vec(WIDTH /2, HEIGHT / 2)
+        self.pos = vec(2*WIDTH /6, HEIGHT / 2)
         self.rect.center = (WIDTH / 2, HEIGHT /2)
         
         # Aceleração
@@ -135,6 +158,9 @@ class Player2(pygame.sprite.Sprite):
         self.PLAYER_ACC = 1
         self.PLAYER_FRICTION = -0.12
         self.PLAYER_GRAV = 1
+        
+        # Escudo
+        self.shield = 100
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -156,8 +182,8 @@ class Player2(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
                 
         # Mantem dentro da tela
-        if self.pos.x > WIDTH:
-            self.pos.x = WIDTH
+        if self.pos.x > WIDTH - 50:
+            self.pos.x = WIDTH - 50
         if self.pos.x < 50:
             self.pos.x = 50
         if self.pos.y > (HEIGHT):
@@ -173,6 +199,12 @@ class Player2(pygame.sprite.Sprite):
         # Personagem pula somente se estiver na plataforma
         if self.vel.y >= 0:
             self.vel.y = -20
+    
+    def shoot(self):
+        # Personagem atira bullets
+        bullet = Bullet(self.rect.centerx, self.rect.top, assets['bullet_img'])
+        all_sprites.add(bullet)
+        bullets.add(bullet)
             
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
@@ -434,9 +466,7 @@ try:
                     player1.jump()
                 # Tiro
                 if event.key == pygame.K_m:
-                        bullet = Bullet(player1.rect.centerx, player1.rect.top, assets["bullet_img"])
-                        all_sprites.add(bullet)
-                        bullets.add(bullet)
+                    player1.shoot()
                         
                         
                 # PLAYER 2
@@ -445,15 +475,15 @@ try:
                     player2.jump()
                 # Tiro
                 if event.key == pygame.K_f:
-                        bullet = Bullet(player2.rect.centerx, player2.rect.top, assets["bullet_img"])
-                        all_sprites.add(bullet)
-                        bullets.add(bullet)
+                    player2.shoot()
                     
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
         all_sprites.update()
         hits1 = pygame.sprite.spritecollide(player1, platforms, False)
         hits2 = pygame.sprite.spritecollide(player2, platforms, False)
+        hits3 = pygame.sprite.spritecollide(player2, bullets, False)
+        hits4 = pygame.sprite.spritecollide(player1, bullets, False)
         if hits1:
             if player1.pos.y < hits1[0].rect.bottom:
             # Jogador 1 colide com a plataforma
@@ -467,12 +497,23 @@ try:
                 player2.pos.y = hits2[0].rect.top
                 # Jogador 2 se mantém na plataforma
                 player2.vel.y = 0
-        
+        for hits in hits3:
+            player2.shield -= 25
+            if player2.shield <= 0:
+                running = False
+        for hits in hits4:
+            player1.shield -= 25
+            if player1.shield <= 0:
+                running = False
+            
         # A cada loop, redesenha o fundo e os sprites
         screen.fill(WHITE)
         screen.blit(background, background_rect)
         all_sprites.draw(screen)
-        
+        # Desenha barra de escudo do player 1
+        draw_shield_bar(screen, WIDTH - 105, 5, player1.shield)
+        # Desenha barra de escudo do player 2
+        draw_shield_bar(screen, 5, 5, player2.shield)
         # Depois de desenhar tudo, inverte o display.
         pygame.display.flip()
         
