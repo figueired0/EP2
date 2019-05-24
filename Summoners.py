@@ -480,8 +480,12 @@ try:
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
         all_sprites.update()
+        
+        # Criando hit para as plataformas
         hits1 = pygame.sprite.spritecollide(player1, platforms, False)
         hits2 = pygame.sprite.spritecollide(player2, platforms, False)
+        
+        # Criando hit para o Tiro
         hits3 = pygame.sprite.spritecollide(player2, bullets, False)
         hits4 = pygame.sprite.spritecollide(player1, bullets, False)
         if hits1:
@@ -497,14 +501,16 @@ try:
                 player2.pos.y = hits2[0].rect.top
                 # Jogador 2 se mantém na plataforma
                 player2.vel.y = 0
+                
+                
         for hits in hits3:
             player2.shield -= 25
             if player2.shield <= 0:
-                running = False
+                running = True
         for hits in hits4:
             player1.shield -= 25
             if player1.shield <= 0:
-                running = False
+                running = True
             
         # A cada loop, redesenha o fundo e os sprites
         screen.fill(WHITE)
