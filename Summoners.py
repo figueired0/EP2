@@ -86,7 +86,8 @@ class Player1(pygame.sprite.Sprite):
         self.image = self.player_img_esquerda
         
         # Deixando transparente.
-        self.image.set_colorkey(WHITE)
+        self.player_img_direita.set_colorkey(WHITE)
+        self.player_img_esquerda.set_colorkey(WHITE)
         
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
@@ -205,7 +206,8 @@ class Player2(pygame.sprite.Sprite):
         self.image = self.player_img_direita
         
         # Deixando transparente.
-        self.image.set_colorkey(WHITE)
+        self.player_img_direita.set_colorkey(WHITE)
+        self.player_img_esquerda.set_colorkey(WHITE)
         
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
