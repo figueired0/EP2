@@ -72,6 +72,10 @@ class Player1(pygame.sprite.Sprite):
         # Escudo
         self.shield = 100
         
+        # Tempo entre os tiros
+        self.shoot_delay = 500
+        self.last_shot = pygame.time.get_ticks()
+        
         # Propriedades dos jogadores (Movimento)
         self.PLAYER_ACC = 1
         self.PLAYER_FRICTION = -0.12
@@ -90,6 +94,7 @@ class Player1(pygame.sprite.Sprite):
             self.acc.x = -self.PLAYER_ACC
         if keys[pygame.K_RIGHT]:
             self.acc.x = self.PLAYER_ACC
+            
         
         # Aplicando a fricção ao movimento
         self.acc.x += self.vel.x * self.PLAYER_FRICTION
@@ -118,9 +123,12 @@ class Player1(pygame.sprite.Sprite):
             self.vel.y = -self.PLAYER_JUMP
     
     def shoot(self):
+        now = pygame.time.get_ticks()
+        if now - self.last_shot > self.shoot_delay:
+            self.last_shot = now
         bullet = Bullet(self.rect.centerx, self.rect.top, assets['bullet_img'])
         all_sprites.add(bullet)
-        bullets.add(bullet)
+        bullets1.add(bullet)
 
 class Player2(pygame.sprite.Sprite):
     
@@ -157,6 +165,10 @@ class Player2(pygame.sprite.Sprite):
         
         # Escudo
         self.shield = 100
+        
+        # Tempo entre os tiros
+        self.shoot_delay = 500
+        self.last_shot = pygame.time.get_ticks()
         
         # Propriedades dos jogadores (Movimento)
         self.PLAYER_ACC = 1
@@ -204,10 +216,12 @@ class Player2(pygame.sprite.Sprite):
             self.vel.y = -self.PLAYER_JUMP
             
     def shoot(self):
-        # Personagem atira bullets
+        now = pygame.time.get_ticks()
+        if now - self.last_shot > self.shoot_delay:
+            self.last_shot = now
         bullet = Bullet(self.rect.centerx, self.rect.top, assets['bullet_img'])
         all_sprites.add(bullet)
-        bullets.add(bullet)
+        bullets2.add(bullet)
         
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, w, h):
@@ -239,7 +253,7 @@ class Bullet(pygame.sprite.Sprite):
         # Coloca no lugar inicial definido em x, y do constutor
         self.rect.bottom = y + 35
         self.rect.centerx = x - 35
-        self.speedx = -20
+        self.speedx = -10
         
     # Metodo que atualiza a posição da navinha
     def update(self):
@@ -300,7 +314,8 @@ all_sprites.add(player2)
 platforms = pygame.sprite.Group()
 
 # Cria um grupo de todos os sprites e adciona um bullet.
-bullets = pygame.sprite.Group()
+bullets1 = pygame.sprite.Group()
+bullets2 = pygame.sprite.Group()
 
 # Cria uma lista de plataforma plataforma
 lista_de_plataforma = [(WIDTH/2 - 58, HEIGHT - 20, 40, 50),
@@ -371,18 +386,15 @@ try:
                     if not player1.JUMPING1:
                         player1.JUMPING1 = True
                         player1.jump()
-                # Tiro
                 if event.key == pygame.K_m:
                     player1.shoot()
-                        
-                        
+                             
                 # PLAYER 2
                 # Pulo
                 if event.key == pygame.K_w:
                     if not player2.JUMPING2:
                         player2.JUMPING2 = True
                         player2.jump()
-                # Tiro
                 if event.key == pygame.K_f:
                     player2.shoot()
                     
@@ -394,8 +406,8 @@ try:
             hits2 = pygame.sprite.spritecollide(player2, platforms, False)
             
             # Criando hit para o Tiro
-            hits3 = pygame.sprite.spritecollide(player2, bullets, False)
-            hits4 = pygame.sprite.spritecollide(player1, bullets, False)
+            hits3 = pygame.sprite.spritecollide(player2, bullets1, True)
+            hits4 = pygame.sprite.spritecollide(player1, bullets2, True)
             
             if hits1:
                 if player1.pos.y < hits1[0].rect.bottom:
