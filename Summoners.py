@@ -215,7 +215,7 @@ class Platform(pygame.sprite.Sprite):
         # Construtor da classe pai (Sprite)
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((w, h))
-#        self.image.set_colorkey(BLACK)
+        self.image.set_colorkey(BLACK)
         self.rect = self. image.get_rect()
         self.rect.x = x
         self.rect.y = y

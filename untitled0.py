@@ -46,7 +46,7 @@ class Player1(pygame.sprite.Sprite):
         
         
         # Carregando a imagem do personagem.
-        player_img = pygame.image.load(path.join(img_dir, "scooby.png")).convert()
+        player_img = pygame.image.load(path.join(img_dir, "scooby_esquerda.png")).convert()
         self.image = player_img
         
         # Diminuindo o tamanho da imagem.
@@ -99,16 +99,16 @@ class Player1(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
                 
         # Mantem dentro da tela
-        if self.pos.x > WIDTH:
-            self.pos.x = WIDTH 
-        if self.pos.x < 50:
-            self.pos.x = 50
-        if self.pos.y > (HEIGHT):
-            self.pos.y = (HEIGHT )
-            self.vel.y = 0
-        if self.pos.y == 0:
-            self.pos.y = 0
-            self.vel.y = 0
+#        if self.pos.x > WIDTH:
+#            self.pos.x = WIDTH 
+#        if self.pos.x < 50:
+#            self.pos.x = 50
+#        if self.pos.y > (HEIGHT):
+#            self.pos.y = (HEIGHT )
+#            self.vel.y = 0
+#        if self.pos.y == 0:
+#            self.pos.y = 0
+#            self.vel.y = 0
             
         self.rect.midbottom = self.pos
         
@@ -132,7 +132,7 @@ class Player2(pygame.sprite.Sprite):
         
         
         # Carregando a imagem do personagem.
-        player_img = pygame.image.load(path.join(img_dir, "scooby.png")).convert()
+        player_img = pygame.image.load(path.join(img_dir, "scooby_direita.png")).convert()
         self.image = player_img
         
         # Diminuindo o tamanho da imagem.
@@ -185,16 +185,16 @@ class Player2(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
                 
         # Mantem dentro da tela
-        if self.pos.x > WIDTH:
-            self.pos.x = WIDTH
-        if self.pos.x < 50:
-            self.pos.x = 50
-        if self.pos.y > (HEIGHT):
-            self.pos.y = (HEIGHT)
-            self.vel.y = 0
-        if self.pos.y == 0:
-            self.pos.y = 0
-            self.vel.y = 0
+#        if self.pos.x > WIDTH:
+#            self.pos.x = WIDTH
+#        if self.pos.x < 50:
+#            self.pos.x = 50
+#        if self.pos.y > (HEIGHT):
+#            self.pos.y = (HEIGHT)
+#            self.vel.y = 0
+#        if self.pos.y == 0:
+#            self.pos.y = 0
+#            self.vel.y = 0
             
         self.rect.midbottom = self.pos
         
@@ -252,9 +252,9 @@ class Bullet(pygame.sprite.Sprite):
 # Carrega todos os assets uma vez só           
 def load_assets(img_dir, snd_dir):
     assets={}
-    assets['player1_img'] = pygame.image.load(path.join(img_dir,'scooby.png')).convert()
+    assets['player1_img'] = pygame.image.load(path.join(img_dir,'scooby_esquerda.png')).convert()
     assets["background_img"] = pygame.image.load(path.join(img_dir,"Cenário.gif")).convert()
-    assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'scooby.png')).convert()
+    assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'scooby_direita.png')).convert()
     assets['bullet_img'] = pygame.image.load(path.join(img_dir,'laserRed16.png')).convert()
     return assets
 
@@ -332,12 +332,14 @@ lista_de_plataforma = [(WIDTH/2 - 58, HEIGHT - 20, 40, 50),
                        (WIDTH/2 + 20, HEIGHT - 15, 130, 50),
                        (WIDTH/2 + 100, HEIGHT - 30, 80, 50),
                        (WIDTH/2 + 20, HEIGHT - 40, 70, 20),
-                       (WIDTH/2 - 340, HEIGHT - 35, 60, 50),
-                       (WIDTH/2 - 275, HEIGHT - 25, 20, 50),
+#                       (WIDTH/2 - 340, HEIGHT - 35, 60, 50),
+#                       (WIDTH/2 - 275, HEIGHT - 25, 20, 50),
                        (WIDTH/2 - 250, HEIGHT - 50, 70, 30),
                        (WIDTH/2 - 230, HEIGHT - 55, 30, 30),
                        (WIDTH/2 - 180, HEIGHT - 30, 65, 50),
-                       (WIDTH/2 - 480, HEIGHT - 10, 70, 50)]
+                       (WIDTH/2 - 480, HEIGHT - 10, 70, 50),
+                       ]
+
 for plat in lista_de_plataforma:
     # Adicionando elemento da lista como uma plataforma
     p = Platform(*plat)
@@ -385,7 +387,8 @@ try:
                 # Tiro
                 if event.key == pygame.K_f:
                     player2.shoot()
-                    
+                           
+    
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
         all_sprites.update()
@@ -435,6 +438,8 @@ try:
         
         # Depois de desenhar tudo, inverte o display.
         pygame.display.flip()
+        
+        
         
 finally:
     pygame.quit()
