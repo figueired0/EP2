@@ -29,6 +29,7 @@ def draw_text(surf, text, size, x, y):
     text_rect = text_surface.get_rect()
     text_rect.midtop = (x, y)
     surf.blit(text_surface, text_rect)
+    
 # Função Barra do Escudo
 def draw_shield_bar(surf, x, y, pct): # (Superfície, posição x, posição y, porcentagem)
     if pct < 0:
@@ -80,11 +81,9 @@ class Player1(pygame.sprite.Sprite):
         
         
         # Carregando a imagem do personagem.
-        player_img = pygame.image.load(path.join(img_dir, "scooby_esquerda.png")).convert()
-        self.image = player_img
-        
-        # Diminuindo o tamanho da imagem.
-        self.image = pygame.transform.scale(player_img, (100, 80))
+        self.player_img_esquerda = pygame.transform.scale(pygame.image.load(path.join(img_dir, "scooby_esquerda.png")).convert(), (100, 80))
+        self.player_img_direita = pygame.transform.scale(pygame.image.load(path.join(img_dir, "scooby_direita.png")).convert(), (100, 80))
+        self.image = self.player_img_esquerda
         
         # Deixando transparente.
         self.image.set_colorkey(WHITE)
@@ -123,6 +122,7 @@ class Player1(pygame.sprite.Sprite):
         self.PLAYER_GRAV = 1.5
         self.PLAYER_JUMP = 20
         self.JUMPING1 = False
+        self.direita = False
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -155,14 +155,22 @@ class Player1(pygame.sprite.Sprite):
             self.pos.x = WIDTH 
         if self.pos.x < 50:
             self.pos.x = 50
-        #if self.pos.y > (HEIGHT):
-            #self.pos.y = (HEIGHT )
-            #self.vel.y = 0
-        #if self.pos.y == 0:
-            #self.pos.y = 0
-            #self.vel.y = 0
+            
+            
+#       Mantém o jogar dentro da tela
+#        if self.pos.y > (HEIGHT):
+#            self.pos.y = (HEIGHT )
+#            self.vel.y = 0
+#        if self.pos.y == 0:
+#            self.pos.y = 0
+#            self.vel.y = 0
             
         self.rect.midbottom = self.pos
+        
+        if self.direita:
+            self.image = self.player_img_direita
+        else:
+            self.image = self.player_img_esquerda
         
     def jump(self):
         # Personagem pula somente se estiver na plataforma
@@ -191,13 +199,10 @@ class Player2(pygame.sprite.Sprite):
         # Construtor da classe pai (Sprite).
         pygame.sprite.Sprite.__init__(self)
         
-        
         # Carregando a imagem do personagem.
-        player_img = pygame.image.load(path.join(img_dir, "scooby_direita.png")).convert()
-        self.image = player_img
-        
-        # Diminuindo o tamanho da imagem.
-        self.image = pygame.transform.scale(player_img, (100, 80))
+        self.player_img_esquerda = pygame.transform.scale(pygame.image.load(path.join(img_dir, "scooby_esquerda.png")).convert(), (100, 80))
+        self.player_img_direita = pygame.transform.scale(pygame.image.load(path.join(img_dir, "scooby_direita.png")).convert(), (100, 80))
+        self.image = self.player_img_direita
         
         # Deixando transparente.
         self.image.set_colorkey(WHITE)
@@ -236,6 +241,7 @@ class Player2(pygame.sprite.Sprite):
         self.PLAYER_GRAV = 1.5
         self.PLAYER_JUMP = 20
         self.JUMPING2 = False
+        self.esquerda = False
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -267,14 +273,21 @@ class Player2(pygame.sprite.Sprite):
             self.pos.x = WIDTH
         if self.pos.x < 50:
             self.pos.x = 50
-        #if self.pos.y > (HEIGHT):
-            #self.pos.y = (HEIGHT)
-            #self.vel.y = 0
-        #if self.pos.y == 0:
-            #self.pos.y = 0
-            #self.vel.y = 0
+            
+#       Mantém o jogador dentro da tela
+#        if self.pos.y > (HEIGHT):
+#            self.pos.y = (HEIGHT)
+#            self.vel.y = 0
+#        if self.pos.y == 0:
+#            self.pos.y = 0
+#            self.vel.y = 0
             
         self.rect.midbottom = self.pos
+        
+        if self.esquerda:
+            self.image = self.player_img_esquerda
+        else:
+            self.image = self.player_img_direita
         
     def jump(self):        
         # Personagem pula somente se estiver na plataforma
@@ -300,6 +313,7 @@ class Platform(pygame.sprite.Sprite):
         # Construtor da classe pai (Sprite)
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((w, h))
+        # Deixa a plataforma transparente
 #        self.image.set_colorkey(BLACK)
         self.rect = self. image.get_rect()
         self.rect.x = x
@@ -434,8 +448,8 @@ try:
                                    (WIDTH/2 - 500, HEIGHT - 105, 45, 20),
                                    (WIDTH/2 - 450, HEIGHT - 200, 40, 20),
                                    (WIDTH/2 - 365, HEIGHT - 380, 60, 20),
-                                   (WIDTH/2 - 365, HEIGHT - 440, 40, 20),
-                                   (WIDTH/2 - 315, HEIGHT - 410, 20, 20),
+#                                   (WIDTH/2 - 365, HEIGHT - 440, 40, 20),
+#                                   (WIDTH/2 - 315, HEIGHT - 410, 20, 20),
                                    (WIDTH/2 + 60, HEIGHT - 420, 60, 20),
                                    (WIDTH/2 + 20, HEIGHT - 15, 130, 50),
                                    (WIDTH/2 + 100, HEIGHT - 30, 80, 50),
@@ -512,7 +526,7 @@ try:
                     # Jogador 2 se mantém na plataforma
                     player2.vel.y = 0
                     player2.JUMPING2 = False
-             # Colisões do player com os tiros       
+            # Colisões do player com os tiros       
             for hits in hits3:
                 player2.shield -= 20
                 if player2.shield <= 0:
@@ -542,6 +556,10 @@ try:
                 
             if player1.lives == 0:
                 game_over = True
+                
+                
+        player1.direita = player1.rect.x < player2.rect.x
+        player2.esquerda = player2.rect.x > player1.rect.x
                 
         # A cada loop, redesenha o fundo e os sprites
         screen.fill(WHITE)
