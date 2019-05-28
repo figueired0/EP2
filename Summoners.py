@@ -77,11 +77,11 @@ class Player1(pygame.sprite.Sprite):
         self.last_shot = pygame.time.get_ticks()
         
         # Propriedades dos jogadores (Movimento)
-        self.PLAYER_ACC = 1
+        self.PLAYER_ACC      = 1
         self.PLAYER_FRICTION = -0.12
-        self.PLAYER_GRAV = 1.5
-        self.PLAYER_JUMP = 20
-        self.JUMPING1 = False
+        self.PLAYER_GRAV     = 1.5
+        self.PLAYER_JUMP     = 20
+        self.JUMPING1        = False
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -154,7 +154,7 @@ class Player2(pygame.sprite.Sprite):
         # self.rect.width = self.rect.width/2
         
         # Posição do personagem
-        self.pos = vec(2*WIDTH /6, HEIGHT / 2)
+        self.pos         = vec(2*WIDTH /6, HEIGHT / 2)
         self.rect.center = (WIDTH / 2, HEIGHT /2)
         
         # Aceleração
@@ -168,14 +168,14 @@ class Player2(pygame.sprite.Sprite):
         
         # Tempo entre os tiros
         self.shoot_delay = 500
-        self.last_shot = pygame.time.get_ticks()
+        self.last_shot   = pygame.time.get_ticks()
         
         # Propriedades dos jogadores (Movimento)
-        self.PLAYER_ACC = 1
+        self.PLAYER_ACC      = 1
         self.PLAYER_FRICTION = -0.12
-        self.PLAYER_GRAV = 1.5
-        self.PLAYER_JUMP = 20
-        self.JUMPING2 = False
+        self.PLAYER_GRAV     = 1.5
+        self.PLAYER_JUMP     = 20
+        self.JUMPING2        = False
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -228,8 +228,8 @@ class Platform(pygame.sprite.Sprite):
         
         # Construtor da classe pai (Sprite)
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((w, h))
-        self.image.set_colorkey(BLACK)
+        self.image  = pygame.Surface((w, h))
+#        self.image.set_colorkey(BLACK)
         self.rect = self. image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -266,10 +266,12 @@ class Bullet(pygame.sprite.Sprite):
 # Carrega todos os assets uma vez só           
 def load_assets(img_dir, snd_dir):
     assets={}
-    assets['player1_img'] = pygame.image.load(path.join(img_dir,'scooby_esquerda.png')).convert()
+    assets['player1_img']    = pygame.image.load(path.join(img_dir,'scooby_esquerda.png')).convert()
     assets["background_img"] = pygame.image.load(path.join(img_dir,"Cenário.gif")).convert()
-    assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'scooby_direita.png')).convert()
-    assets['bullet_img'] = pygame.image.load(path.join(img_dir,'laserRed16.png')).convert()
+    assets['Player2_img']    = pygame.image.load(path.join(img_dir, 'scooby_direita.png')).convert()
+    assets['bullet_img']     = pygame.image.load(path.join(img_dir,'laserRed16.png')).convert()
+    assets['shoot1_sound']   = pygame.mixer.Sound(path.join(snd_dir,"bang_09.ogg"))
+    assets['shoot2_sound']   = pygame.mixer.Sound(path.join(snd_dir,"bang_01.ogg"))
     return assets
 
 
@@ -296,7 +298,8 @@ background_rect = background.get_rect()
 # Carrega os sons do jogo
 pygame.mixer.music.load(path.join(snd_dir, 'Background_sound.ogg'))
 pygame.mixer.music.set_volume(0.4)
-
+shoot1_sound = assets['shoot1_sound']
+shoot2_sound = assets['shoot2_sound']
 
 # Cria um personagem. O construtor será chamado automaticamente.
 player1 = Player1(assets['player1_img'])
@@ -386,8 +389,10 @@ try:
                     if not player1.JUMPING1:
                         player1.JUMPING1 = True
                         player1.jump()
+                # Tiro
                 if event.key == pygame.K_m:
                     player1.shoot()
+                    shoot1_sound.play()
                              
                 # PLAYER 2
                 # Pulo
@@ -395,8 +400,10 @@ try:
                     if not player2.JUMPING2:
                         player2.JUMPING2 = True
                         player2.jump()
+                # Tiro
                 if event.key == pygame.K_f:
                     player2.shoot()
+                    shoot2_sound.play()
                     
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
