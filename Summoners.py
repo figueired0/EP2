@@ -79,10 +79,13 @@ class Bullet(pygame.sprite.Sprite):
         # Construtor da classe pai (Sprite).
         pygame.sprite.Sprite.__init__(self)
         
-        self.image = bullet_img
+        self.bullet_direita_img = assets['bullet_direita_img']
+        self.bullet_img = assets['bullet_img']
+        self.image = self.bullet_img
         
         # Deixando transparente.
-        self.image.set_colorkey(BLACK)
+        self.bullet_direita_img.set_colorkey(BLACK)
+        self.bullet_img.set_colorkey(BLACK)
         
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
@@ -98,6 +101,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speedx = -10
         if direita:
             self.speedx = 10
+            self.image = self.bullet_direita_img
         
     # Metodo que atualiza a posição da navinha
     def update(self):
@@ -371,6 +375,7 @@ def load_assets(img_dir, snd_dir):
     assets["background_img"] = pygame.image.load(path.join(img_dir,"Cenário.gif")).convert()
     assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'scooby_direita.png')).convert()
     assets['bullet_img'] = pygame.image.load(path.join(img_dir,'laserRed16.png')).convert()
+    assets['bullet_direita_img'] = pygame.image.load(path.join(img_dir,'laserRed16_direita.png')).convert()
     assets['shoot1_sound']   = pygame.mixer.Sound(path.join(snd_dir,"bang_09.ogg"))
     assets['shoot2_sound']   = pygame.mixer.Sound(path.join(snd_dir,"bang_01.ogg"))
     return assets
