@@ -584,12 +584,14 @@ try:
         all_sprites.draw(screen)
         
         # Desenha barra de escudo do player 1
-        draw_shield_bar(screen, WIDTH - 105, 5, player1.shield)
-        draw_lives(screen, WIDTH - 90, 25, player1.lives, player1_mini_img)
+        draw_text(screen, "PLAYER 1", 18, WIDTH - 45, 5)
+        draw_shield_bar(screen, WIDTH - 105, 25, player1.shield)
+        draw_lives(screen, WIDTH - 90, 40, player1.lives, player1_mini_img)
         
-        # Desenha barra de escudo do player 2
-        draw_shield_bar(screen, 5, 5, player2.shield)
-        draw_lives(screen, 5, 25, player2.lives, player2_mini_img)
+        # Desenha barra de escudo e vida do player 2
+        draw_text(screen, "PLAYER 2", 18, 40, 5)
+        draw_shield_bar(screen, 5, 25, player2.shield)
+        draw_lives(screen, 5, 40, player2.lives, player2_mini_img)
         
         # Depois de desenhar tudo, inverte o display.
         pygame.display.flip()
