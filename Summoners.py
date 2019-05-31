@@ -88,8 +88,12 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         
         # Coloca no lugar inicial definido em x, y do constutor
-        self.rect.bottom = y + 35
-        self.rect.centerx = x - 35
+        if not direita:
+            self.rect.bottom = y + 35
+            self.rect.centerx = x - 35
+        elif direita:
+            self.rect.bottom = y + 35
+            self.rect.centerx = x + 35
         
         self.speedx = -10
         if direita:
@@ -463,11 +467,11 @@ try:
 #                                   (WIDTH/2 - 365, HEIGHT - 440, 40, 20),
 #                                   (WIDTH/2 - 315, HEIGHT - 410, 20, 20),
                                    (WIDTH/2 + 60, HEIGHT - 420, 60, 20),
-#                                   (WIDTH/2 + 20, HEIGHT - 15, 130, 50),
-#                                   (WIDTH/2 + 100, HEIGHT - 30, 80, 50),
-#                                   (WIDTH/2 + 20, HEIGHT - 40, 70, 20),
-#                                   (WIDTH/2 - 340, HEIGHT - 35, 60, 50),
-#                                   (WIDTH/2 - 275, HEIGHT - 25, 20, 50),
+                                   (WIDTH/2 + 20, HEIGHT - 15, 130, 50),
+                                   (WIDTH/2 + 100, HEIGHT - 30, 80, 50),
+                                   (WIDTH/2 + 20, HEIGHT - 40, 70, 20),
+                                   (WIDTH/2 - 340, HEIGHT - 35, 60, 50),
+                                   (WIDTH/2 - 275, HEIGHT - 25, 20, 50),
                                    (WIDTH/2 - 250, HEIGHT - 50, 70, 30),
                                    (WIDTH/2 - 230, HEIGHT - 55, 30, 30),
                                    (WIDTH/2 - 180, HEIGHT - 30, 65, 50),
