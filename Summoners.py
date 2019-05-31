@@ -59,7 +59,7 @@ def show_go_screen():
     draw_text(screen, "SUMMONERS", 64, WIDTH/2, HEIGHT/4)
     draw_text(screen, "Player 1, setas para se mexer, M para atirar", 22, WIDTH/2, 2.5*HEIGHT/5)
     draw_text(screen, "Player 2, teclas W,A,D para se mexer, F para atirar", 22, WIDTH/2, 3*HEIGHT/5)
-    draw_text(screen, "Pressione qualquer tecla para começar", 18, WIDTH/2, HEIGHT * 4/5)
+    draw_text(screen, "Pressione ESPAÇO para começar", 18, WIDTH/2, HEIGHT * 4/5)
     pygame.display.flip()
     waiting = True
     while waiting:
@@ -67,12 +67,48 @@ def show_go_screen():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-            if event.type == pygame.KEYUP:
-                waiting = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    waiting = False
+        
+class Bullet(pygame.sprite.Sprite):
+    
+    # Construtor da classe.
+    def __init__(self, x, y, bullet_img, direita):
+        
+        # Construtor da classe pai (Sprite).
+        pygame.sprite.Sprite.__init__(self)
+        
+        self.image = bullet_img
+        
+        # Deixando transparente.
+        self.image.set_colorkey(BLACK)
+        
+        # Detalhes sobre o posicionamento.
+        self.rect = self.image.get_rect()
+        
+        # Coloca no lugar inicial definido em x, y do constutor
+        self.rect.bottom = y + 35
+        self.rect.centerx = x - 35
+        
+        self.speedx = -10
+        if direita:
+            self.speedx = 10
+        
+    # Metodo que atualiza a posição da navinha
+    def update(self):
+        self.rect.x += self.speedx
+        
+        # Se o tiro passar do inicio da tela, morre.
+        if self.rect.centerx < 0:
+            self.kill()
+       
+        
         
 # Classe Jogador que representa o personagem
 class Player1(pygame.sprite.Sprite):
-    
+
+            
     # Construtor da classe.
     def __init__(self, player_img):
         
@@ -124,6 +160,8 @@ class Player1(pygame.sprite.Sprite):
         self.PLAYER_JUMP = 20
         self.JUMPING1 = False
         self.direita = False
+        self.tiro_esquerda = -1
+        self.tiro_direita = 1
         
     # Metodo que atualiza a posição do boneco
     def update(self):
@@ -182,7 +220,7 @@ class Player1(pygame.sprite.Sprite):
         now = pygame.time.get_ticks()
         if now - self.last_shot > self.shoot_delay:
             self.last_shot = now
-        bullet = Bullet(self.rect.centerx, self.rect.top, assets['bullet_img'])
+        bullet = Bullet(self.rect.centerx, self.rect.top, assets['bullet_img'], self.direita)
         all_sprites.add(bullet)
         bullets1.add(bullet)
         
@@ -288,6 +326,7 @@ class Player2(pygame.sprite.Sprite):
         
         if self.esquerda:
             self.image = self.player_img_esquerda
+            
         else:
             self.image = self.player_img_direita
         
@@ -300,7 +339,7 @@ class Player2(pygame.sprite.Sprite):
         now = pygame.time.get_ticks()
         if now - self.last_shot > self.shoot_delay:
             self.last_shot = now
-        bullet = Bullet(self.rect.centerx, self.rect.top, assets['bullet_img'])
+        bullet = Bullet(self.rect.centerx, self.rect.top, assets['bullet_img'], not self.esquerda)
         all_sprites.add(bullet)
         bullets2.add(bullet)
     def hide(self):
@@ -321,35 +360,6 @@ class Platform(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         
-class Bullet(pygame.sprite.Sprite):
-    
-    # Construtor da classe.
-    def __init__(self, x, y, bullet_img):
-        
-        # Construtor da classe pai (Sprite).
-        pygame.sprite.Sprite.__init__(self)
-        
-        self.image = bullet_img
-        
-        # Deixando transparente.
-        self.image.set_colorkey(BLACK)
-        
-        # Detalhes sobre o posicionamento.
-        self.rect = self.image.get_rect()
-        
-        # Coloca no lugar inicial definido em x, y do constutor
-        self.rect.bottom = y + 35
-        self.rect.centerx = x - 35
-        self.speedx = -10
-        
-    # Metodo que atualiza a posição da navinha
-    def update(self):
-        self.rect.x += self.speedx
-        
-        # Se o tiro passar do inicio da tela, morre.
-        if self.rect.centerx < 0:
-            self.kill()
-       
 # Carrega todos os assets uma vez só           
 def load_assets(img_dir, snd_dir):
     assets={}
@@ -453,11 +463,11 @@ try:
 #                                   (WIDTH/2 - 365, HEIGHT - 440, 40, 20),
 #                                   (WIDTH/2 - 315, HEIGHT - 410, 20, 20),
                                    (WIDTH/2 + 60, HEIGHT - 420, 60, 20),
-                                   (WIDTH/2 + 20, HEIGHT - 15, 130, 50),
-                                   (WIDTH/2 + 100, HEIGHT - 30, 80, 50),
-                                   (WIDTH/2 + 20, HEIGHT - 40, 70, 20),
-                                   (WIDTH/2 - 340, HEIGHT - 35, 60, 50),
-                                   (WIDTH/2 - 275, HEIGHT - 25, 20, 50),
+#                                   (WIDTH/2 + 20, HEIGHT - 15, 130, 50),
+#                                   (WIDTH/2 + 100, HEIGHT - 30, 80, 50),
+#                                   (WIDTH/2 + 20, HEIGHT - 40, 70, 20),
+#                                   (WIDTH/2 - 340, HEIGHT - 35, 60, 50),
+#                                   (WIDTH/2 - 275, HEIGHT - 25, 20, 50),
                                    (WIDTH/2 - 250, HEIGHT - 50, 70, 30),
                                    (WIDTH/2 - 230, HEIGHT - 55, 30, 30),
                                    (WIDTH/2 - 180, HEIGHT - 30, 65, 50),
@@ -490,6 +500,7 @@ try:
                 if event.key == pygame.K_m:
                     player1.shoot()
                     shoot1_sound.play()
+
                              
                 # PLAYER 2
                 # Pulo
@@ -562,7 +573,7 @@ try:
                 
         player1.direita = player1.rect.x < player2.rect.x
         player2.esquerda = player2.rect.x > player1.rect.x
-                
+        
         # A cada loop, redesenha o fundo e os sprites
         screen.fill(WHITE)
         screen.blit(background, background_rect)
