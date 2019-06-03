@@ -53,6 +53,16 @@ def draw_lives(surf, x, y, lives, img):
         img_rect.y = y
         surf.blit(img, img_rect)
 
+# Função que mostra quantos tiros tem:
+def draw_bullets_remaining(surf, x, y, bullets_remaining, img):
+    for i in range(bullets_remaining):
+        img_rect = img.get_rect()
+        #Posição x das vidas é igual a posição inicial mais 30 pixels vezes i
+        img_rect.x = x + 10 * i
+        img_rect.y = y
+        surf.blit(img, img_rect)
+    
+
 # Função que mostra a tela GAME OVER
 def show_go_screen():
     screen.blit(background, background_rect)
@@ -382,6 +392,7 @@ def load_assets(img_dir, snd_dir):
     assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'scooby_direita.png')).convert()
     assets['bullet_img'] = pygame.image.load(path.join(img_dir,'laserRed16.png')).convert()
     assets['bullet_direita_img'] = pygame.image.load(path.join(img_dir,'laserRed16_direita.png')).convert()
+    assets['bullet_cima_img'] = pygame.image.load(path.join(img_dir, 'laserRed16_cima.png')).convert()
     assets['shoot1_sound']   = pygame.mixer.Sound(path.join(snd_dir,"bang_09.ogg"))
     assets['shoot2_sound']   = pygame.mixer.Sound(path.join(snd_dir,"bang_01.ogg"))
     return assets
@@ -428,6 +439,10 @@ player1_mini_img.set_colorkey(WHITE)
 player2_mini_img = pygame.transform.scale(player2.image, (25, 19))
 player2_mini_img.set_colorkey(WHITE)
 
+# Cria quantos tiros ainda tem:
+bullet_cima_img = assets['bullet_cima_img']
+bullet_cima_mini_img = pygame.transform.scale(bullet_cima_img, (5, 20))
+bullet_cima_mini_img.set_colorkey(BLACK)
 
 # Comando para evitar travamentos.
 try:
@@ -602,15 +617,17 @@ try:
         screen.blit(background, background_rect)
         all_sprites.draw(screen)
         
-        # Desenha barra de escudo do player 1
+        # Desenha informações do player 1
         draw_text(screen, "PLAYER 1", 18, WIDTH - 45, 5)
         draw_shield_bar(screen, WIDTH - 105, 25, player1.shield)
         draw_lives(screen, WIDTH - 90, 40, player1.lives, player1_mini_img)
+        draw_bullets_remaining(screen, WIDTH - 150, 65, player1.bullets_remaining, bullet_cima_mini_img)
         
-        # Desenha barra de escudo e vida do player 2
+        # Desenha informaçòes do player 2
         draw_text(screen, "PLAYER 2", 18, 40, 5)
         draw_shield_bar(screen, 5, 25, player2.shield)
         draw_lives(screen, 5, 40, player2.lives, player2_mini_img)
+        draw_bullets_remaining(screen, 10, 60, player2.bullets_remaining, bullet_cima_mini_img)
         
         # Depois de desenhar tudo, inverte o display.
         pygame.display.flip()
