@@ -260,8 +260,8 @@ class Player2(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         
         # Carregando a imagem do personagem.
-        self.player_img_esquerda = pygame.transform.scale(pygame.image.load(path.join(img_dir, "scooby_esquerda.png")).convert(), (100, 80))
-        self.player_img_direita = pygame.transform.scale(pygame.image.load(path.join(img_dir, "scooby_direita.png")).convert(), (100, 80))
+        self.player_img_esquerda = pygame.transform.scale(pygame.image.load(path.join(img_dir, "rxlr8_esquerda.png")).convert(), (50, 60))
+        self.player_img_direita = pygame.transform.scale(pygame.image.load(path.join(img_dir, "rxlr8_direita.png")).convert(), (50, 60))
         self.image = self.player_img_direita
         
         # Deixando transparente.
@@ -379,7 +379,7 @@ class Platform(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((w, h))
         # Deixa a plataforma transparente
-#        self.image.set_colorkey(BLACK)
+        self.image.set_colorkey(BLACK)
         self.rect = self. image.get_rect()
         self.rect.x = x
         self.rect.y = y
@@ -389,7 +389,7 @@ def load_assets(img_dir, snd_dir):
     assets={}
     assets['player1_img'] = pygame.image.load(path.join(img_dir,'scooby_esquerda.png')).convert()
     assets["background_img"] = pygame.image.load(path.join(img_dir,"Cenário.gif")).convert()
-    assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'scooby_direita.png')).convert()
+    assets['Player2_img'] = pygame.image.load(path.join(img_dir, 'rxlr8_direita.png')).convert()
     assets['bullet_img'] = pygame.image.load(path.join(img_dir,'laserRed16.png')).convert()
     assets['bullet_direita_img'] = pygame.image.load(path.join(img_dir,'laserRed16_direita.png')).convert()
     assets['bullet_cima_img'] = pygame.image.load(path.join(img_dir, 'laserRed16_cima.png')).convert()
