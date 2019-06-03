@@ -69,6 +69,7 @@ def show_go_screen():
     draw_text(screen, "SUMMONERS", 64, WIDTH/2, HEIGHT/4)
     draw_text(screen, "Player 1, setas para se mexer, M para atirar", 22, WIDTH/2, 2.5*HEIGHT/5)
     draw_text(screen, "Player 2, teclas W,A,D para se mexer, F para atirar", 22, WIDTH/2, 3*HEIGHT/5)
+    draw_text(screen, "Se cair da torre, perde uma vida", 22, WIDTH/2, 3.5*HEIGHT/5)
     draw_text(screen, "Pressione ESPAÇO para começar", 18, WIDTH/2, HEIGHT * 4/5)
     pygame.display.flip()
     waiting = True
