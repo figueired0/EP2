@@ -157,6 +157,9 @@ class Player1(pygame.sprite.Sprite):
         # Vidas
         self.lives = 3
         
+        # Tiros restantes
+        self.bullets_remaining = 15
+        
         # Esconde o player enquanto ele renasce por algum tempo
         self.hidden = False
         self.hide_timer = pygame.time.get_ticks()
@@ -278,6 +281,9 @@ class Player2(pygame.sprite.Sprite):
         
         # Vidas
         self.lives = 3
+        
+        # Tiros restantes
+        self.bullets_remaining = 15
         
         # Esconde o player enquanto ele renasce por algum tempo
         self.hidden = False
@@ -507,8 +513,10 @@ try:
                         player1.jump()
                 # Tiro
                 if event.key == pygame.K_m:
-                    player1.shoot()
-                    shoot1_sound.play()
+                    if player1.bullets_remaining > 0:
+                        player1.shoot()
+                        shoot1_sound.play()
+                        player1.bullets_remaining -= 1
 
                              
                 # PLAYER 2
@@ -519,8 +527,10 @@ try:
                         player2.jump()
                 # Tiro
                 if event.key == pygame.K_f:
-                    player2.shoot()
-                    shoot2_sound.play()
+                    if player2.bullets_remaining > 0:
+                        player2.shoot()
+                        shoot2_sound.play()
+                        player2.bullets_remaining -= 1
                     
         # Depois de processar os eventos.
         # Atualiza a acao de cada sprite.
@@ -555,6 +565,7 @@ try:
                     player2.hide()
                     player2.lives -= 1
                     player2.shield = 100
+                    player2.bullets_remaining = 15
                     
             for hits in hits4:
                 player1.shield -= 20
@@ -562,16 +573,19 @@ try:
                     player1.hide()
                     player1.lives -= 1
                     player1.shield = 100
+                    player1.bullets_remaining = 15
             # Se o player cair, ele morre
             if player1.pos.y > HEIGHT:
                 player1.hide()
                 player1.lives -= 1
                 player1.shield = 100
+                player1.bullets_remaining = 15
             
             if player2.pos.y > HEIGHT:
                 player2.hide()
                 player2.lives -= 1
                 player2.shield = 100
+                player2.bullets_remaining = 15
             # Se acabarem as vidas, morrem e acaba o jogo      
             if player2.lives == 0:
                 game_over = True
