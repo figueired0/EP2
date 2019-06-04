@@ -619,10 +619,6 @@ try:
                     elif math.fabs(player2.acc.x) > math.fabs(player1.acc.x):
                         player1.pos.x -= WIDTH/10
                     
-            
-#            if hits6:
-#                if player2.acc.x > player1.acc.x:
-#                    player2.pos.x -= WIDTH/10
                 
             # Se o player cair, ele morre
             if player1.pos.y > HEIGHT:
