@@ -1,6 +1,7 @@
 # Importando as bibliotecas necessárias.
 import math
 import pygame
+import time
 from os import path
 vec = pygame.math.Vector2
 
@@ -172,6 +173,9 @@ class Player1(pygame.sprite.Sprite):
         # Tiros restantes
         self.bullets_remaining = 15
         
+        # Pontuação
+        self.score = 0
+        
         # Esconde o player enquanto ele renasce por algum tempo
         self.hidden = False
         self.hide_timer = pygame.time.get_ticks()
@@ -296,6 +300,9 @@ class Player2(pygame.sprite.Sprite):
         
         # Tiros restantes
         self.bullets_remaining = 15
+        
+        # Pontuação
+        self.score = 0
         
         # Esconde o player enquanto ele renasce por algum tempo
         self.hidden = False
@@ -586,6 +593,7 @@ try:
                 if player2.shield <= 0:
                     player2.hide()
                     player2.lives -= 1
+                    player1.score += 1
                     player2.shield = 100
                     player2.bullets_remaining = 15
                     
@@ -594,6 +602,7 @@ try:
                 if player1.shield <= 0:
                     player1.hide()
                     player1.lives -= 1
+                    player2.score += 1
                     player1.shield = 100
                     player1.bullets_remaining = 15
             
@@ -619,19 +628,54 @@ try:
             if player1.pos.y > HEIGHT:
                 player1.hide()
                 player1.lives -= 1
+                player2.score += 1
                 player1.shield = 100
                 player1.bullets_remaining = 15
             
             if player2.pos.y > HEIGHT:
                 player2.hide()
                 player2.lives -= 1
+                player1.score += 1
                 player2.shield = 100
                 player2.bullets_remaining = 15
+                
             # Se acabarem as vidas, morrem e acaba o jogo      
             if player2.lives == 0:
+                draw_text(screen, "Parabéns...", 22, WIDTH/2, HEIGHT/5)
+                draw_text(screen, "PLAYER 1 GANHOU", 32, WIDTH/2, HEIGHT/4)
+                if player1.score - player2.score == 3:
+                    draw_text(screen, "E ACHOU FÁCIL !!", 28, WIDTH/2, HEIGHT/3)
+                    
+                elif player1.score - player2.score == 2:
+                    draw_text(screen, "PARECE ATÉ", 28, WIDTH/2, HEIGHT/3)
+                    draw_text(screen, "QUE É BOM !!", 28, WIDTH/2, HEIGHT/3 + 28)
+                    
+                elif player1.score - player2.score == 1:
+                    draw_text(screen, "VITÓRIAS SOFRIDAS", 28, WIDTH/2, HEIGHT/3)
+                    draw_text(screen, ",AS VEZES,", 28, WIDTH/2, HEIGHT/3 + 28)
+                    draw_text(screen, "SÃO AS MELHORES !!", 28, WIDTH/2, HEIGHT/3 + 56)
+                    
+                pygame.display.flip()
+                time.sleep(3)
                 game_over = True
                 
             if player1.lives == 0:
+                draw_text(screen, "Parabéns...", 22, WIDTH/2, HEIGHT/5)
+                draw_text(screen, "PLAYER 2 GANHOU", 32, WIDTH/2, HEIGHT/4)
+                if player2.score - player1.score == 3:
+                    draw_text(screen, "E ACHOU FÁCIL !!", 28, WIDTH/2, HEIGHT/3)
+                    
+                elif player2.score - player1.score == 2:
+                    draw_text(screen, "PARECE ATÉ", 28, WIDTH/2, HEIGHT/3)
+                    draw_text(screen, "QUE É BOM !!", 28, WIDTH/2, HEIGHT/3 + 28)
+                    
+                elif player2.score - player1.score == 1:
+                    draw_text(screen, "VITÓRIAS SOFRIDAS", 28, WIDTH/2, HEIGHT/3)
+                    draw_text(screen, ", AS VEZES,", 28, WIDTH/2, HEIGHT/3 + 28)
+                    draw_text(screen, "SÃO AS MELHORES !!", 28, WIDTH/2, HEIGHT/3 + 56)
+                
+                pygame.display.flip()
+                time.sleep(3)
                 game_over = True
                 
                
@@ -648,12 +692,14 @@ try:
         draw_shield_bar(screen, WIDTH - 105, 25, player1.shield)
         draw_lives(screen, WIDTH - 90, 40, player1.lives, player1_mini_img)
         draw_bullets_remaining(screen, WIDTH - 150, 65, player1.bullets_remaining, bullet_cima_mini_img)
+        draw_text(screen,"{0} PONTOS".format(player1.score), 18, WIDTH/2 + 490, 5)
         
         # Desenha informaçòes do player 2
         draw_text(screen, "PLAYER 2", 18, 40, 5)
         draw_shield_bar(screen, 5, 25, player2.shield)
         draw_lives(screen, 5, 40, player2.lives, player2_mini_img)
         draw_bullets_remaining(screen, 10, 60, player2.bullets_remaining, bullet_cima_mini_img)
+        draw_text(screen,"{0} PONTOS".format(player2.score), 18, WIDTH/2 - 490, 5)
         
         # Depois de desenhar tudo, inverte o display.
         pygame.display.flip()
