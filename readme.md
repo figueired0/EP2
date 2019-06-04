@@ -10,23 +10,23 @@ Alunos:
 
 Comandos:
   Player 1:
-  ↑ para pular
-  → para andar para direita
-  ← para andar para esquerda
-  "m" para atirar
+  ↑ para pular;
+  → para andar para direita;
+  ← para andar para esquerda;
+  "m" para atirar.
 
   Player 2:
-  "w" para pular
-  "d" para andar para direita
-  "a" para andar para esquerda
-  "f" para atirar
+  "w" para pular;
+  "d" para andar para direita;
+  "a" para andar para esquerda;
+  "f" para atirar.
  
  Informações:
-  Cada vida possuí 100 pontos
-  Cada disparo tira 20 pontos da vida do adversário
-  Se algum jogador cair do cenário, ele perde uma vida diretamente
-  Os dois jogadores começam com 3 vidas cada
-  Quando as vidas de um dos jogadores chegar a 0, ele perde e o outro é considerado o vencedor
+  Cada vida possuí 100 pontos;
+  Cada disparo tira 20 pontos da vida do adversário;
+  Se algum jogador cair do cenário, ele perde uma vida diretamente;
+  Os dois jogadores começam com 3 vidas cada;
+  Quando as vidas de um dos jogadores chegar a 0, ele perde e o outro é considerado o vencedor.
   
   Bugs:
     Caso algum "bug" for encontrado, não se hesite em contatar qualquer um dos alunos responsáveis(E-mails acima)
