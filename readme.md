@@ -7,6 +7,7 @@ Alunos:
 - João Pedro Varella, joaopv1@insper.edu.br
 
 "Summoners" é um jogo PvP ("Player versus Player") qual 2 persongens lutam por suas vidas usando seus tiros ou a própria força para matar ou derrubar o oponente da torre de batalha. A torre, no entanto, é composta de várias imperfeições em sua construção, possibilitando ao player se apoiar e utilizar essas como uma "plataforma", além das árvores ao redor que também podem ajudá-lo. Cada jogador começa com três vidas e aquele que perder as três é o guerreiro derrotado, em relação ao outro, esse pode ser considerado o campeão.
+Desejamos a você uma boa batalha!
 
 Comandos:
   Player 1:
