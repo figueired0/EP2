@@ -1,4 +1,5 @@
 # Importando as bibliotecas necessárias.
+import math
 import pygame
 from os import path
 vec = pygame.math.Vector2
@@ -69,6 +70,7 @@ def show_go_screen():
     draw_text(screen, "SUMMONERS", 64, WIDTH/2, HEIGHT/4)
     draw_text(screen, "Player 1, setas para se mexer, M para atirar", 22, WIDTH/2, 2.5*HEIGHT/5)
     draw_text(screen, "Player 2, teclas W,A,D para se mexer, F para atirar", 22, WIDTH/2, 3*HEIGHT/5)
+    draw_text(screen, "Se cair da torre, perde uma vida", 22, WIDTH/2, 3.5*HEIGHT/5)
     draw_text(screen, "Pressione ESPAÇO para começar", 18, WIDTH/2, HEIGHT * 4/5)
     pygame.display.flip()
     waiting = True
@@ -431,6 +433,7 @@ player2 = Player2(assets['Player2_img'])
 player1.enemy = player2.rect
 player2.enemy = player1.rect
 
+
 # Cria as vidas:
 # Player 1
 player1_mini_img = pygame.transform.scale(player1.image, (25, 19))
@@ -558,6 +561,10 @@ try:
             hits3 = pygame.sprite.spritecollide(player2, bullets1, True)
             hits4 = pygame.sprite.spritecollide(player1, bullets2, True)
             
+            # Criando colisão entre os players:
+            hits5 = pygame.sprite.collide_rect(player1, player2)
+#            hits6 = pygame.sprite.collide_rect(player2, player1)
+            
             if hits1:
                 if player1.pos.y < hits1[0].rect.bottom:
                 # Jogador 1 colide com a plataforma
@@ -589,6 +596,25 @@ try:
                     player1.lives -= 1
                     player1.shield = 100
                     player1.bullets_remaining = 15
+            
+             # Colisão player - player:
+            if hits5:
+                if player1.pos.x > player2.pos.x:
+                    if math.fabs(player1.acc.x) > math.fabs(player2.acc.x):
+                        player2.pos.x -= WIDTH/10
+                    elif math.fabs(player2.acc.x) > math.fabs(player1.acc.x):
+                        player1.pos.x += WIDTH/10
+                if player1.pos.x < player2.pos.x:
+                    if math.fabs(player1.acc.x) > math.fabs(player2.acc.x):
+                        player2.pos.x += WIDTH/10
+                    elif math.fabs(player2.acc.x) > math.fabs(player1.acc.x):
+                        player1.pos.x -= WIDTH/10
+                    
+            
+#            if hits6:
+#                if player2.acc.x > player1.acc.x:
+#                    player2.pos.x -= WIDTH/10
+                
             # Se o player cair, ele morre
             if player1.pos.y > HEIGHT:
                 player1.hide()
@@ -608,7 +634,7 @@ try:
             if player1.lives == 0:
                 game_over = True
                 
-                
+               
         player1.direita = player1.rect.x < player2.rect.x
         player2.esquerda = player2.rect.x > player1.rect.x
         

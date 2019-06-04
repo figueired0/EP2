@@ -1,60 +1,150 @@
-import os
-import pprint
 import pygame
 
-class PS4Controller(object):
-    """Class representing the PS4 controller. Pretty straightforward functionality."""
+# Define some colors
+BLACK    = (   0,   0,   0)
+WHITE    = ( 255, 255, 255)
 
-    controller = None
-    axis_data = None
-    button_data = None
-    hat_data = None
+# This is a simple class that will help us print to the screen
+# It has nothing to do with the joysticks, just outputting the
+# information.
+class TextPrint:
+    def __init__(self):
+        self.reset()
+        self.font = pygame.font.Font(None, 20)
 
-    def init(self):
-        """Initialize the joystick components"""
+    def print(self, screen, textString):
+        textBitmap = self.font.render(textString, True, BLACK)
+        screen.blit(textBitmap, [self.x, self.y])
+        self.y += self.line_height
         
-        pygame.init()
-        pygame.joystick.init()
-        self.controller = pygame.joystick.Joystick(0)
-        self.controller.init()
-
-    def listen(self):
-        """Listen for events to happen"""
+    def reset(self):
+        self.x = 10
+        self.y = 10
+        self.line_height = 15
         
-        if not self.axis_data:
-            self.axis_data = {}
+    def indent(self):
+        self.x += 10
+        
+    def unindent(self):
+        self.x -= 10
+    
 
-        if not self.button_data:
-            self.button_data = {}
-            for i in range(self.controller.get_numbuttons()):
-                self.button_data[i] = False
+pygame.init()
+ 
+# Set the width and height of the screen [width,height]
+size = [500, 700]
+screen = pygame.display.set_mode(size)
 
-        if not self.hat_data:
-            self.hat_data = {}
-            for i in range(self.controller.get_numhats()):
-                self.hat_data[i] = (0, 0)
+pygame.display.set_caption("My Game")
 
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.JOYAXISMOTION:
-                    self.axis_data[event.axis] = round(event.value,2)
-                elif event.type == pygame.JOYBUTTONDOWN:
-                    self.button_data[event.button] = True
-                elif event.type == pygame.JOYBUTTONUP:
-                    self.button_data[event.button] = False
-                elif event.type == pygame.JOYHATMOTION:
-                    self.hat_data[event.hat] = event.value
+#Loop until the user clicks the close button.
+done = False
 
-                # Insert your code on what you would like to happen for each event here!
-                # In the current setup, I have the state simply printing out to the screen.
-                
-                os.system('clear')
-                pprint.pprint(self.button_data)
-                pprint.pprint(self.axis_data)
-                pprint.pprint(self.hat_data)
+# Used to manage how fast the screen updates
+clock = pygame.time.Clock()
 
+# Initialize the joysticks
+pygame.joystick.init()
+    
+# Get ready to print
+textPrint = TextPrint()
 
-if __name__ == "__main__":
-    ps4 = PS4Controller()
-    ps4.init()
-    ps4.listen()
+# -------- Main Program Loop -----------
+while done==False:
+    # EVENT PROCESSING STEP
+    for event in pygame.event.get(): # User did something
+        if event.type == pygame.QUIT: # If user clicked close
+            done=True # Flag that we are done so we exit this loop
+        
+        # Possible joystick actions: JOYAXISMOTION JOYBALLMOTION JOYBUTTONDOWN JOYBUTTONUP JOYHATMOTION
+        if event.type == pygame.JOYBUTTONDOWN:
+            print("Joystick button pressed.")
+        if event.type == pygame.JOYBUTTONUP:
+            print("Joystick button released.")
+            
+#        if event.type == pygame.JOYAXISMOTION:
+#            print("Joystick button pressed.")
+#        if event.type == pygame.JOYAXISMOTION:
+#            print("Joystick button released.")
+            
+            
+ 
+    # DRAWING STEP
+    # First, clear the screen to white. Don't put other drawing commands
+    # above this, or they will be erased with this command.
+    screen.fill(WHITE)
+    textPrint.reset()
+
+    # Get count of joysticks
+    joystick_count = pygame.joystick.get_count()
+
+    textPrint.print(screen, "Number of joysticks: {}".format(joystick_count) )
+    textPrint.indent()
+    
+    # For each joystick:
+    for i in range(joystick_count):
+        joystick = pygame.joystick.Joystick(i)
+        joystick.init()
+    
+        textPrint.print(screen, "Joystick {}".format(i) )
+        textPrint.indent()
+    
+        # Get the name from the OS for the controller/joystick
+        name = joystick.get_name()
+        textPrint.print(screen, "Joystick name: {}".format(name) )
+        
+        # Usually axis run in pairs, up/down for one, and left/right for
+        # the other.
+        axes = joystick.get_numaxes()
+        textPrint.print(screen, "Number of axes: {}".format(axes) )
+        textPrint.indent()
+        
+        for i in range( axes ):
+            axis = joystick.get_axis( i )
+            textPrint.print(screen, "Axis {} value: {:>6.3f}".format(i, axis) )
+        textPrint.unindent()
+            
+        buttons = joystick.get_numbuttons()
+        textPrint.print(screen, "Number of buttons: {}".format(buttons) )
+        textPrint.indent()
+
+        for i in range( buttons ):
+            button = joystick.get_button( i )
+            textPrint.print(screen, "Button {:>2} value: {}".format(i,button) )
+        textPrint.unindent()
+            
+        # Hat switch. All or nothing for direction, not like joysticks.
+        # Value comes back in an array.
+        hats = joystick.get_numhats()
+        textPrint.print(screen, "Number of hats: {}".format(hats) )
+        textPrint.indent()
+
+        for i in range( hats ):
+            hat = joystick.get_hat( i )
+            textPrint.print(screen, "Hat {} value: {}".format(i, str(hat)) )
+            if hat == '0, 1':
+                print("Joystick button pressed.")
+        textPrint.unindent()
+        
+        textPrint.unindent()
+        
+        if event.type == pygame.JOYHATMOTION:
+            if hat > 0:
+                print("Joystick button pressed.")
+            elif hat < 0:
+                print("Joystick button released.")
+
+    
+    # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
+    
+    # Go ahead and update the screen with what we've drawn.
+    pygame.display.flip()
+
+    # Limit to 20 frames per second
+    clock.tick(20)
+    
+# Close the window and quit.
+# If you forget this line, the program will 'hang'
+# on exit if running from IDLE.
+pygame.quit ()
+quit()
