@@ -171,7 +171,7 @@ class Player1(pygame.sprite.Sprite):
         self.lives = 3
         
         # Tiros restantes
-        self.bullets_remaining = 15
+        self.bullets_remaining = 12
         
         # Pontuação
         self.score = 0
@@ -299,7 +299,7 @@ class Player2(pygame.sprite.Sprite):
         self.lives = 3
         
         # Tiros restantes
-        self.bullets_remaining = 15
+        self.bullets_remaining = 12
         
         # Pontuação
         self.score = 0
@@ -429,7 +429,7 @@ background_rect = background.get_rect()
 
 # Carrega os sons do jogo
 pygame.mixer.music.load(path.join(snd_dir, 'Background_sound.ogg'))
-pygame.mixer.music.set_volume(0.4)
+pygame.mixer.music.set_volume(2)
 shoot1_sound = assets['shoot1_sound']
 shoot2_sound = assets['shoot2_sound']
 
@@ -638,7 +638,7 @@ try:
             # Se acabarem as vidas, morrem e acaba o jogo      
             if player2.lives == 0:
                 draw_text(screen, "Parabéns...", 22, WIDTH/2, HEIGHT/5)
-                draw_text(screen, "PLAYER 1 GANHOU", 32, WIDTH/2, HEIGHT/4)
+                draw_text(screen, "SCOOBY GANHOU", 32, WIDTH/2, HEIGHT/4)
                 if player1.score - player2.score == 3:
                     draw_text(screen, "E ACHOU FÁCIL !!", 28, WIDTH/2, HEIGHT/3)
                     
@@ -657,7 +657,7 @@ try:
                 
             if player1.lives == 0:
                 draw_text(screen, "Parabéns...", 22, WIDTH/2, HEIGHT/5)
-                draw_text(screen, "PLAYER 2 GANHOU", 32, WIDTH/2, HEIGHT/4)
+                draw_text(screen, "R2-D2 GANHOU", 32, WIDTH/2, HEIGHT/4)
                 if player2.score - player1.score == 3:
                     draw_text(screen, "E ACHOU FÁCIL !!", 28, WIDTH/2, HEIGHT/3)
                     
@@ -684,14 +684,14 @@ try:
         all_sprites.draw(screen)
         
         # Desenha informações do player 1
-        draw_text(screen, "PLAYER 1", 18, WIDTH - 45, 5)
+        draw_text(screen, "SCOOBY", 18, WIDTH - 45, 5)
         draw_shield_bar(screen, WIDTH - 105, 25, player1.shield)
         draw_lives(screen, WIDTH - 90, 40, player1.lives, player1_mini_img)
         draw_bullets_remaining(screen, WIDTH - 150, 65, player1.bullets_remaining, bullet_cima_mini_img)
         draw_text(screen,"{0} PONTOS".format(player1.score), 18, WIDTH/2 + 490, 5)
         
         # Desenha informaçòes do player 2
-        draw_text(screen, "PLAYER 2", 18, 40, 5)
+        draw_text(screen, "R2-D2", 18, 40, 5)
         draw_shield_bar(screen, 5, 25, player2.shield)
         draw_lives(screen, 5, 40, player2.lives, player2_mini_img)
         draw_bullets_remaining(screen, 10, 60, player2.bullets_remaining, bullet_cima_mini_img)
