@@ -321,7 +321,7 @@ class Player2(pygame.sprite.Sprite):
         # Aparecer se estiver escondido
         if self.hidden and pygame.time.get_ticks() - self.hide_timer > 300:
             self.hidden = False
-            self.pos = vec(2*WIDTH /6, HEIGHT/ 2)
+            self.pos = vec(2 * WIDTH /6, HEIGHT/ 2)
             #self.rect.bottom = HEIGHT / 2
             
         # Gerando a graviade.
