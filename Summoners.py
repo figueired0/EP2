@@ -1,6 +1,7 @@
 # Importando as bibliotecas necessárias.
 import math
 import pygame
+import time
 from os import path
 vec = pygame.math.Vector2
 
@@ -637,11 +638,44 @@ try:
                 player1.score += 1
                 player2.shield = 100
                 player2.bullets_remaining = 15
+                
             # Se acabarem as vidas, morrem e acaba o jogo      
             if player2.lives == 0:
+                draw_text(screen, "Parabéns...", 22, WIDTH/2, HEIGHT/5)
+                draw_text(screen, "PLAYER 1 GANHOU", 32, WIDTH/2, HEIGHT/4)
+                if player1.score - player2.score == 3:
+                    draw_text(screen, "E ACHOU FÁCIL !!", 28, WIDTH/2, HEIGHT/3)
+                    
+                elif player1.score - player2.score == 2:
+                    draw_text(screen, "PARECE ATÉ", 28, WIDTH/2, HEIGHT/3)
+                    draw_text(screen, "QUE É BOM !!", 28, WIDTH/2, HEIGHT/3 + 28)
+                    
+                elif player1.score - player2.score == 1:
+                    draw_text(screen, "VITÓRIAS SOFRIDAS", 28, WIDTH/2, HEIGHT/3)
+                    draw_text(screen, ",AS VEZES,", 28, WIDTH/2, HEIGHT/3 + 28)
+                    draw_text(screen, "SÃO AS MELHORES !!", 28, WIDTH/2, HEIGHT/3 + 56)
+                    
+                pygame.display.flip()
+                time.sleep(3)
                 game_over = True
                 
             if player1.lives == 0:
+                draw_text(screen, "Parabéns...", 22, WIDTH/2, HEIGHT/5)
+                draw_text(screen, "PLAYER 2 GANHOU", 32, WIDTH/2, HEIGHT/4)
+                if player2.score - player1.score == 3:
+                    draw_text(screen, "E ACHOU FÁCIL !!", 28, WIDTH/2, HEIGHT/3)
+                    
+                elif player2.score - player1.score == 2:
+                    draw_text(screen, "PARECE ATÉ", 28, WIDTH/2, HEIGHT/3)
+                    draw_text(screen, "QUE É BOM !!", 28, WIDTH/2, HEIGHT/3 + 28)
+                    
+                elif player2.score - player1.score == 1:
+                    draw_text(screen, "VITÓRIAS SOFRIDAS", 28, WIDTH/2, HEIGHT/3)
+                    draw_text(screen, ", AS VEZES,", 28, WIDTH/2, HEIGHT/3 + 28)
+                    draw_text(screen, "SÃO AS MELHORES !!", 28, WIDTH/2, HEIGHT/3 + 56)
+                
+                pygame.display.flip()
+                time.sleep(3)
                 game_over = True
                 
                
